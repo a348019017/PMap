@@ -8,6 +8,9 @@
 * pmap-rz
 Cesium 日照分析sdk
 
+## Demo（GIF）
+<img src="https://ponggis.xyz:8070/static/pmap-rz.gif">
+
 
 ## Example
 ```
@@ -72,7 +75,8 @@ viewer.scene.primitives.add(this._rzprimitive);
 
 
 ## Demo
-<img src="20230313113446.png">
+
+
 
 
 

@@ -1,8 +1,8 @@
 {
   "name": "pmap_rz",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "files": [
-    "dist","20230313113446.png"
+    "dist"
   ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
