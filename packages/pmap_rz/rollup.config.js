@@ -23,5 +23,8 @@ export default {
     plugins: [
         resolve(),commonjs(),terser(),uglify(),obfuscator()
     ],
+    // plugins: [
+    //     resolve(),commonjs()
+    // ],
     external: []
 };

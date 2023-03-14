@@ -90,6 +90,47 @@ export class RZPrimitiveX {
     }
   }
 
+
+  //设置多边形的高度
+  setHeight(value){
+    //设置多边形的高度，这里直接修改primitive的modelmatrix来抬升高度，避免了顶点对象的修改，性能上有优势
+    if (this.polygonprimitrive) {
+      this.scaleHeight(value);
+      //this._index=0;
+    }
+  }
+
+  refresh(){
+    this._index=0;
+  }
+
+  scaleHeight(value) {
+    //不方便直接修改primitive的原始坐标，可采用修改modelMatrix的方式进行动态抬升,
+    let m = Cesium.Transforms.eastNorthUpToFixedFrame(this.centerWC);
+    let inverse = Cesium.Matrix4.inverse(m, new Cesium.Matrix4());
+
+    let offsetHeight = value - this.center.height;
+
+    let mtranslation = Cesium.Matrix4.fromTranslation(
+      new Cesium.Cartesian3(0.0, 0.0, offsetHeight)
+    );
+    let tt = Cesium.Matrix4.multiply(
+      mtranslation,
+      inverse,
+      new Cesium.Matrix4()
+    );
+    this.polygonprimitrive.modelMatrix = Cesium.Matrix4.multiply(
+      m,
+      tt,
+      new Cesium.Matrix4()
+    );
+
+    // if (this.polygoncutEnty) {
+    //   this.polygoncutEnty.polygon.extrudedHeight=value;
+    // }
+  }
+
+
   init(viewer, options) {
     this.show = true;
     this.secondsOfDay = 0;
@@ -135,6 +176,14 @@ export class RZPrimitiveX {
         //perPositionHeight:true,
         vertexFormat: Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT,
       });
+
+      debugger
+     this.center= Cesium.BoundingSphere.fromPoints(options.positions).center;
+     this.center=Cesium.Cartographic.fromCartesian(this.center);
+     this.center.height=options.height;
+     this.centerWC=Cesium.Cartographic.toCartesian(this.center);
+
+
 
       var polygonInstance = new Cesium.GeometryInstance({
         geometry: polygeo,
@@ -371,6 +420,7 @@ void main()
     if (!this.show) {
       return;
     }
+    let that=this;
     if (!this._isready) return;
     if (Cesium.defined(this._extraCmds)) {
       if (!frameState.camera.position.equals(this._cameraPosition)) {
@@ -378,6 +428,8 @@ void main()
         this._isSampleDone=false;
         this._cameraPosition = Cesium.clone(frameState.camera.position);
         //一个update这计算60次，而非每次计算一次
+      }
+      if(this._index==0){
         frameState.commandList.push(this._clearColorCommand);
       }
       if (this._index < this._count) {
@@ -394,6 +446,9 @@ void main()
         //this._shadowmap._lightCamera=newcamera;
         this._shadowmap.dirty = true;
         frameState.shadowMaps.push(this._shadowmap);
+        this._extraCmds.forEach(c=>{
+          c.modelMatrix=that.polygonprimitrive.modelMatrix;
+        })
         frameState.commandList.push(...this._extraCmds);
 
         this._index++;
@@ -415,6 +470,9 @@ void main()
         // }
         //frameState.commandList.push(this._viewportQuadCommand);
         //全部渲染完成后计算指定点的值使用readpiexel，读取fb，
+        this.polygonCmds.forEach(c=>{
+          c.modelMatrix=that.polygonprimitrive.modelMatrix;
+        })
         frameState.commandList.push(...this.polygonCmds);
         //渲染结束后展示
       }

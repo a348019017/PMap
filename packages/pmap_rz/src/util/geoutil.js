@@ -1,6 +1,4 @@
-import * as turf from "@turf/turf"
-
-
+//import * as turf from "@turf/turf"
 
 //工具一组多边形，计算间距
 export function getNearestLine(featurecollection,option){
@@ -14,20 +12,20 @@ export function getNearestLine(featurecollection,option){
 
 
 //行数据集转换成geojson，用于加载
-export function rowstoGeojson(rows, option) {
-  //let rheight = option && option.height ? option.height : undefined;
-  let features = rows.map((i) => {
-    //处理高度的复写
-    if (option.height != undefined) {
-      i.geometry.coordinates.forEach((j) => {
-        j[2] = option.height;
-      });
-    }
-    return turf.feature(i.geometry, i);
-  });
-  features = turf.featureCollection(features);
-  return features;
-}
+// export function rowstoGeojson(rows, option) {
+//   //let rheight = option && option.height ? option.height : undefined;
+//   let features = rows.map((i) => {
+//     //处理高度的复写
+//     if (option.height != undefined) {
+//       i.geometry.coordinates.forEach((j) => {
+//         j[2] = option.height;
+//       });
+//     }
+//     return turf.feature(i.geometry, i);
+//   });
+//   features = turf.featureCollection(features);
+//   return features;
+// }
 
   
 

@@ -3,12 +3,18 @@
     <img src="https://img.shields.io/npm/v/pmap-cesium.svg">
   </a>
 
+## 联系我
+13247118869
+
 ## 简介
 
 * pmap-rz
 Cesium 日照分析sdk
 
 ## Demo（GIF）
+ <a href="https://ponggis.xyz:8070/static/pmap-rz.gif">
+   demo地址
+ </a>
 <img src="https://ponggis.xyz:8070/static/pmap-rz.gif">
 
 
