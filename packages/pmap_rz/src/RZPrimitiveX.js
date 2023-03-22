@@ -100,6 +100,39 @@ export class RZPrimitiveX {
     }
   }
 
+
+  /**
+   * 选取屏幕坐标下的值
+   * @param {*} position 
+   * @returns 
+   */
+  pickPosition(position)
+  {
+    
+    var context = viewer.scene.context;
+    const gl = context._gl;
+    const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+    if (status === gl.FRAMEBUFFER_COMPLETE) {
+      //height != undefined ? (position.height = height) : undefined;
+      //position = Cesium.Cartographic.toCartesian(position);
+      let chanedc = Cesium.SceneTransforms.wgs84ToWindowCoordinates(
+        viewer.scene,
+        position
+      );
+
+      var pixels = context.readPixels({
+        x: Number.parseInt(chanedc.x),
+        y: Number.parseInt(chanedc.y),
+        width: 1,
+        height: 1,
+        framebuffer: this._fb,
+      });
+
+      return pixels[0]*10/255.0;
+    }
+    return -1;
+  }
+
   refresh(){
     this._index=0;
   }

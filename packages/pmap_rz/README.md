@@ -15,7 +15,7 @@ Cesium 日照分析sdk
  <a href="https://ponggis.xyz:8070/static/pmap-rz.gif">
    demo地址
  </a>
-<img src="https://ponggis.xyz:8070/static/pmap-rz.gif">
+<img src="20230313113446.png">
 
 
 ## Example
@@ -27,8 +27,7 @@ let legends=[
             color:"#f50205",
             min:0,
             max:1,
-        },
-        {
+        }, {
             name:"2",
             color:"#f9a100",
             title:"1-2小时",
