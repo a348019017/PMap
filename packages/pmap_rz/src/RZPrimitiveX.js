@@ -165,6 +165,7 @@ export class RZPrimitiveX {
 
 
   init(viewer, options) {
+    let that=this;
     this.show = true;
     this.secondsOfDay = 0;
 
@@ -175,10 +176,34 @@ export class RZPrimitiveX {
     if (options.legends) {
       this._legendimage = createlegendImage(options.legends);
       //同时创建纹理指向
-      this.vtxfTexture = new Cesium.Texture({
-        context: context,
-        source: this._legendimage,
-      });
+      Cesium.Resource.createIfNeeded(this._legendimage.src)
+      .fetchImage()
+      .then(function (image) {
+        var vtxfTexture;
+        var context = viewer.scene.context;
+        if (Cesium.defined(image.internalFormat)) {
+          vtxfTexture = new Cesium.Texture({
+            context: context,
+            pixelFormat: image.internalFormat,
+            width: image.width,
+            height: image.height,
+            source: {
+              arrayBufferView: image.bufferView,
+            },
+          });
+        } else {
+          // var dd = new Cesium.Sampler({
+          //   minificationFilter: Cesium.TextureMinificationFilter.NEAREST,
+          //   magnificationFilter: Cesium.TextureMagnificationFilter.NEAREST,
+          // });
+          vtxfTexture = new Cesium.Texture({
+            context: context,
+            source: image,
+          });
+        }
+
+        that.vtxfTexture = vtxfTexture;
+      })
     }
     this._cameraPosition = new Cesium.Cartesian3();
 
