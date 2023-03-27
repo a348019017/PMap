@@ -235,7 +235,7 @@ export class RZPrimitiveX {
         vertexFormat: Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT,
       });
 
-      debugger
+      
      this.center= Cesium.BoundingSphere.fromPoints(options.positions).center;
      this.center=Cesium.Cartographic.fromCartesian(this.center);
      this.center.height=options.height;
@@ -291,10 +291,11 @@ export class RZPrimitiveX {
       this.polygonprimitrive = polygonPrimitive;
 
       let starttime = new Date(Date.now());
-      starttime.setHours(17, 0, 0);
-      //总计计算60次，10个小时
+      starttime.setHours(16, 0, 0);
+      //上午8时到下午16时
+      //总计计算48次，8个小时
       this._index = 0;
-      this._count = 60;
+      this._count = 48;
       starttime = Cesium.JulianDate.fromDate(starttime);
 
       this._starttime = starttime;

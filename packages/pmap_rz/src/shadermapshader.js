@@ -9,9 +9,12 @@ const ShadowMapShader = Cesium.ShadowMapShader;
 
 let oldshaderfunc = undefined;
 
-function setCustomShader() {
+function setCustomShader(value) {
   const isopengles3 = Number.parseInt(Cesium.VERSION.split(".")[1]) >= 101;
   oldshaderfunc = ShadowMapShader.createShadowReceiveFragmentShader;
+  let rd=value;
+  if(!rd)
+    rd=1.0/48.0;
   if (isopengles3) {
     ShadowMapShader.createShadowReceiveVertexShader = function (
       vs,
@@ -263,7 +266,7 @@ function setCustomShader() {
     
             //gl_FragColor.rgb *= visibility;
            // float rd=0.083333;
-            float rd=0.016667;
+            float rd=0.020833;
             vec4 helsing_visibleAreaColor=vec4(1.0*rd,0.0,0.0,1.0);
             vec4 helsing_unvisibleAreaColor=vec4(0.0,1.0*rd,0.0,1.0);
             if(visibility>0.30){
@@ -507,7 +510,7 @@ function setCustomShader() {
       //fsSource += "    gl_FragColor.rgb *= visibility; \n" + "} \n";
 
       fsSource += `   
-      float rd=0.016667;
+      float rd=0.020833;
       vec4 helsing_visibleAreaColor=vec4(1.0*rd,0.0,0.0,1.0);
       vec4 helsing_unvisibleAreaColor=vec4(0.0,1.0*rd,0.0,1.0);
       if(visibility>0.30){
@@ -529,9 +532,9 @@ function setCustomShader() {
   }
 }
 
-export function setShaderDefault(ischangeshader) {
+export function setShaderDefault(ischangeshader,value) {
   if (ischangeshader) {
-    setCustomShader();
+    setCustomShader(value);
   } else {
     ShadowMapShader.createShadowReceiveFragmentShader = oldshaderfunc;
   }
