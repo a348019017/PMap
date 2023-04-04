@@ -128,7 +128,7 @@ export class RZPrimitiveX {
         framebuffer: this._fb,
       });
 
-      return pixels[0]*10/255.0;
+      return pixels[0]*(this._count/6.0)/255.0;
     }
     return -1;
   }
