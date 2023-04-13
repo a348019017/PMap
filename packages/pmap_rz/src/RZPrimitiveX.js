@@ -24,6 +24,28 @@ czm_material czm_getMaterial(czm_materialInput materialInput)
 `;
 
 
+const customshader2 = `
+uniform sampler2D image;
+uniform sampler2D legend;
+
+czm_material czm_getMaterial(czm_materialInput materialInput)
+{
+    czm_material material = czm_getDefaultMaterial(materialInput);
+    
+    vec2 UV = gl_FragCoord.xy/czm_viewport.zw;
+    //从屏幕取样
+    vec4 sampled = texture2D(image,materialInput.st).rgba;
+    //sampled.r=0.5;
+    vec4 dcolor= texture2D(legend, vec2(sampled.r,0.0));
+
+    material.alpha=1.0;
+    material.diffuse=dcolor.rgb;
+    return material;
+}
+
+`;
+
+
 //这里还需要将shader的修改也集成进来，两个版本1.99,1.101
 
 Cesium.Material.RZType = "RZType";
@@ -48,51 +70,73 @@ Cesium.Material._materialCache.addMaterial(Cesium.Material.RZType, {
     //magnificationFilter: Cesium.TextureMagnificationFilter.NEAREST
 });
 
+Cesium.Material.RZType2 = "RZType2";
+Cesium.Material._materialCache.addMaterial(Cesium.Material.RZType2, {
+    fabric: {
+        type: Cesium.Material.RZType2,
+        uniforms: {
+            image: Cesium.Material.DefaultImageId,
+            legend: Cesium.Material.DefaultImageId,
+        },
+        source: customshader2,
+    },
+    //minificationFilter: Cesium.TextureMinificationFilter.LINEAR_MIPMAP_NEAREST,
+    translucent: function (material) {
+        return true;
+        // const uniforms = material.uniforms;
+        // return (
+        //     uniforms.baseWaterColor.alpha < 1.0 || uniforms.blendColor.alpha < 1.0
+        // );
+    },
+    //minificationFilter: Cesium.TextureMinificationFilter.NEAREST,
+    //magnificationFilter: Cesium.TextureMagnificationFilter.NEAREST
+});
+
 
 
 //仅创建一个shdowmap，通过修改camera来持续的叠加，以期提高精度
 export class RZPrimitiveX {
   constructor(viewer, options) {
     //如果设置贴地，自动计算当前视图下的高度
-    let that=this;
-    this._option=options;
+    let that = this;
+    this._option = options;
 
-    this._samplePoints=options.samplePoints;
-    this._sampleCallback=options.sampleCallback;
-    this._isSampleDone=false;
+    this._samplePoints = options.samplePoints;
+    this._sampleCallback = options.sampleCallback;
+    this._isSampleDone = false;
+
+     //默认为非实时分析模式
+     this._realMode = options.realMode!=undefined?options.realMode:false;
 
     if (options.clampground) {
-      
-      options.positions=options.positions.map(i=>{
-        let j= Cesium.Cartographic.fromCartesian(i);
+      options.positions = options.positions.map((i) => {
+        let j = Cesium.Cartographic.fromCartesian(i);
         return j;
-      })
-      
+      });
+
       const promise = Cesium.sampleTerrainMostDetailed(
         viewer.terrainProvider,
         options.positions
       );
       Promise.resolve(promise).then(function (updatedPositions) {
-        let maxheight=-9999;
-        updatedPositions=updatedPositions.map(i=>{
-          if(i.height>maxheight){
-            maxheight=i.height;
+        let maxheight = -9999;
+        updatedPositions = updatedPositions.map((i) => {
+          if (i.height > maxheight) {
+            maxheight = i.height;
           }
           return Cesium.Cartographic.toCartesian(i);
-        })
-        options.height=maxheight;
-        options.positions=updatedPositions;
-        that.init(viewer,options);
+        });
+        options.height = maxheight;
+        options.positions = updatedPositions;
+        that.initx(viewer, options);
       });
-    }else
-    {
-       that.init(viewer,options);
+    } else {
+      that.initx(viewer, options);
     }
   }
 
-
   //设置多边形的高度
-  setHeight(value){
+  setHeight(value) {
     //设置多边形的高度，这里直接修改primitive的modelmatrix来抬升高度，避免了顶点对象的修改，性能上有优势
     if (this.polygonprimitrive) {
       this.scaleHeight(value);
@@ -100,15 +144,12 @@ export class RZPrimitiveX {
     }
   }
 
-
   /**
    * 选取屏幕坐标下的值
-   * @param {*} position 
-   * @returns 
+   * @param {*} position
+   * @returns
    */
-  pickPosition(position)
-  {
-    
+  pickPosition(position) {
     var context = viewer.scene.context;
     const gl = context._gl;
     const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
@@ -128,13 +169,13 @@ export class RZPrimitiveX {
         framebuffer: this._fb,
       });
 
-      return pixels[0]*(this._count/6.0)/255.0;
+      return (pixels[0] * (this._count / 6.0)) / 255.0;
     }
     return -1;
   }
 
-  refresh(){
-    this._index=0;
+  refresh() {
+    this._index = 0;
   }
 
   scaleHeight(value) {
@@ -163,9 +204,33 @@ export class RZPrimitiveX {
     // }
   }
 
+  //默认设置相机位置并锁定，计算完成后结束锁定
+  initx(viewer, options) {
+    let that = this;
+    if (!this._realMode) {
+      //设置相机到覆盖多边形，获取多边形参数，并缩放到其中
+      let tpos = options.positions.map((i) => {
+        //设置其高度之后再进行计算
+        let cat = Cesium.Cartographic.fromCartesian(i);
+        cat.height = options.height;
+        let  j = Cesium.Cartographic.toCartesian(cat);
+        return j;
+      });
+      let bbox =Cesium.BoundingSphere.fromPoints(tpos);
+      viewer.scene.camera.switchToPerspectiveFrustum();
+      viewer.scene.camera.flyToBoundingSphere(bbox,{
+        offset:new Cesium.HeadingPitchRange(0,-1.57,0),
+        complete: function () {
+          that.init(viewer, options);
+        },
+      });
+    } else {
+      this.init(viewer, options);
+    }
+  }
 
   init(viewer, options) {
-    let that=this;
+    let that = this;
     this.show = true;
     this.secondsOfDay = 0;
 
@@ -177,33 +242,33 @@ export class RZPrimitiveX {
       this._legendimage = createlegendImage(options.legends);
       //同时创建纹理指向
       Cesium.Resource.createIfNeeded(this._legendimage.src)
-      .fetchImage()
-      .then(function (image) {
-        var vtxfTexture;
-        var context = viewer.scene.context;
-        if (Cesium.defined(image.internalFormat)) {
-          vtxfTexture = new Cesium.Texture({
-            context: context,
-            pixelFormat: image.internalFormat,
-            width: image.width,
-            height: image.height,
-            source: {
-              arrayBufferView: image.bufferView,
-            },
-          });
-        } else {
-          // var dd = new Cesium.Sampler({
-          //   minificationFilter: Cesium.TextureMinificationFilter.NEAREST,
-          //   magnificationFilter: Cesium.TextureMagnificationFilter.NEAREST,
-          // });
-          vtxfTexture = new Cesium.Texture({
-            context: context,
-            source: image,
-          });
-        }
+        .fetchImage()
+        .then(function (image) {
+          var vtxfTexture;
+          var context = viewer.scene.context;
+          if (Cesium.defined(image.internalFormat)) {
+            vtxfTexture = new Cesium.Texture({
+              context: context,
+              pixelFormat: image.internalFormat,
+              width: image.width,
+              height: image.height,
+              source: {
+                arrayBufferView: image.bufferView,
+              },
+            });
+          } else {
+            // var dd = new Cesium.Sampler({
+            //   minificationFilter: Cesium.TextureMinificationFilter.NEAREST,
+            //   magnificationFilter: Cesium.TextureMagnificationFilter.NEAREST,
+            // });
+            vtxfTexture = new Cesium.Texture({
+              context: context,
+              source: image,
+            });
+          }
 
-        that.vtxfTexture = vtxfTexture;
-      })
+          that.vtxfTexture = vtxfTexture;
+        });
     }
     this._cameraPosition = new Cesium.Cartesian3();
 
@@ -227,21 +292,66 @@ export class RZPrimitiveX {
       });
       this._fb = framebuffer;
 
+      let uvhierarchy=undefined;
+      //非实时需要计算纹理坐标
+      if(!this._realMode){
+        let tpos = options.positions.map((i) => {
+          //Boudingrectange的计算完全有问题这个width，height还真不能实际使用。不得行，还是按经纬度去计算空间距离
+          let cat = Cesium.Cartographic.fromCartesian(i);
+          cat.height = options.height;
+          i = Cesium.Cartographic.toCartesian(cat);
+
+          let glPos = Cesium.Matrix4.multiplyByVector(
+            viewer.scene.context.uniformState.modelViewProjection,
+            new Cesium.Cartesian4(i.x, i.y, i.z, 1.0),
+            new Cesium.Cartesian4()
+          );
+          let uv = Cesium.Cartesian4.add(
+            Cesium.Cartesian4.divideByScalar(
+              Cesium.Cartesian4.divideByScalar(
+                glPos,
+                glPos.w,
+                new Cesium.Cartesian4()
+              ),
+              2,
+              new Cesium.Cartesian4()
+            ),
+            new Cesium.Cartesian4(0.5, 0.5),
+            new Cesium.Cartesian4()
+          );
+          uv.x = uv.x > 1.0 ? 1.0 : uv.x;
+          uv.x = uv.x < 0.0 ? 0.0 : uv.x;
+          uv.y = uv.y > 1.0 ? 1.0 : uv.y;
+          uv.y = uv.y < 0.0 ? 0.0 : uv.y;
+          return new Cesium.Cartesian2(uv.x, uv.y);
+        });
+        uvhierarchy=new Cesium.PolygonHierarchy(tpos);
+      }
+
       var newhierarchy = new Cesium.PolygonHierarchy(options.positions);
-      let polygeo = new Cesium.PolygonGeometry({
-        polygonHierarchy: newhierarchy,
-        height:options.height,
-        //perPositionHeight:true,
-        vertexFormat: Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT,
-      });
+      let polygeo=undefined;
+      if(uvhierarchy){
+        polygeo = new Cesium.PolygonGeometry({
+          polygonHierarchy: newhierarchy,
+          height:options.height,
+          //perPositionHeight:true,
+          vertexFormat: Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT,
+          textureCoordinates:uvhierarchy
+        });
+      }else
+      {
+        polygeo = new Cesium.PolygonGeometry({
+          polygonHierarchy: newhierarchy,
+          height:options.height,
+          //perPositionHeight:true,
+          vertexFormat: Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT,
+        });
+      }
 
-      
-     this.center= Cesium.BoundingSphere.fromPoints(options.positions).center;
-     this.center=Cesium.Cartographic.fromCartesian(this.center);
-     this.center.height=options.height;
-     this.centerWC=Cesium.Cartographic.toCartesian(this.center);
-
-
+      this.center = Cesium.BoundingSphere.fromPoints(options.positions).center;
+      this.center = Cesium.Cartographic.fromCartesian(this.center);
+      this.center.height = options.height;
+      this.centerWC = Cesium.Cartographic.toCartesian(this.center);
 
       var polygonInstance = new Cesium.GeometryInstance({
         geometry: polygeo,
@@ -259,7 +369,7 @@ export class RZPrimitiveX {
         appearance: new Cesium.EllipsoidSurfaceAppearance({
           material: new Cesium.Material({
             fabric: {
-              type: "RZType",
+              type: this._realMode?"RZType":"RZType2",
               uniforms: {
                 legend: this._legendimage,
               },
@@ -269,23 +379,6 @@ export class RZPrimitiveX {
           }),
         }),
       });
-
-      // let polygonPrimitive2 = new Cesium.GroundPrimitive({
-      //   geometryInstances: polygonInstance,
-      //   asynchronous: false,
-      //   appearance: new Cesium.EllipsoidSurfaceAppearance({
-      //     material: new Cesium.Material({
-      //       fabric: {
-      //         type: "RZType",
-      //         uniforms: {
-      //           legend: this._legendimage,
-      //         },
-      //       },
-      //       minificationFilter: Cesium.TextureMinificationFilter.NEAREST,
-      //       magnificationFilter: Cesium.TextureMagnificationFilter.NEAREST,
-      //     }),
-      //   }),
-      // });
 
 
       this.polygonprimitrive = polygonPrimitive;
@@ -381,12 +474,12 @@ void main()
 
       this.polygonprimitrive.readyPromise.then((dt) => {
         setShaderDefault(true);
-        let tocmd=dt._colorCommands;
+        let tocmd = dt._colorCommands;
         //let tocmd=[dt._primitive._primitive._colorCommands[1]];
         //let rst=dt._primitive._primitive._colorCommands
         let rst = tocmd.map((c) => {
           c.receiveShadows = true;
-          
+
           let tt = Cesium.ShadowMap.createReceiveDerivedCommand(
             [that._shadowmap],
             c,
@@ -427,21 +520,15 @@ void main()
           return j;
         });
 
-        
         that.polygonprimitrive.show = false;
         that._isready = true;
       });
       viewer.scene.primitives.add(this.polygonprimitrive);
 
-      //window.ttyy = this.polygonprimitrive;
-      //创建多个shadermap
-
-      //不需渲染本地，仅仅渲染shadowmap,防止干扰手动创建commad
-      //let rst=this.createshadowmap();
+      
     }
 
-    //this.createShadowMap(viewer, options);
-    //this.addPostProcessStage();
+    
   }
 
   //创建一个新的framebuffer
@@ -466,29 +553,26 @@ void main()
     return framebuffer;
   }
 
-
   //传入采样点
-  setSamplePoints(value){
-    this._samplePoints=value;
-    this._isSampleDone=false;
+  setSamplePoints(value) {
+    this._samplePoints = value;
+    this._isSampleDone = false;
   }
-
 
   //不必一次性提交，当camera发生变化时自动刷新
   update(frameState) {
     if (!this.show) {
       return;
     }
-    let that=this;
+    let that = this;
     if (!this._isready) return;
     if (Cesium.defined(this._extraCmds)) {
-      if (!frameState.camera.position.equals(this._cameraPosition)) {
+      if (!frameState.camera.position.equals(this._cameraPosition)&&this._realMode) {
         this._index = 0;
-        this._isSampleDone=false;
+        this._isSampleDone = false;
         this._cameraPosition = Cesium.clone(frameState.camera.position);
-        //一个update这计算60次，而非每次计算一次
       }
-      if(this._index==0){
+      if (this._index == 0) {
         frameState.commandList.push(this._clearColorCommand);
       }
       if (this._index < this._count) {
@@ -505,33 +589,27 @@ void main()
         //this._shadowmap._lightCamera=newcamera;
         this._shadowmap.dirty = true;
         frameState.shadowMaps.push(this._shadowmap);
-        this._extraCmds.forEach(c=>{
-          c.modelMatrix=that.polygonprimitrive.modelMatrix;
-        })
+        this._extraCmds.forEach((c) => {
+          c.modelMatrix = that.polygonprimitrive.modelMatrix;
+        });
         frameState.commandList.push(...this._extraCmds);
 
         this._index++;
       } else {
         //采样点的实时计算回调
-        if(this._samplePoints&&this._sampleCallback&&!this._isSampleDone){
-          
-          let samplePoints=this._samplePoints.map(i=>{
-             return Cesium.Cartographic.fromCartesian(i);
+        if (this._samplePoints && this._sampleCallback && !this._isSampleDone) {
+          let samplePoints = this._samplePoints.map((i) => {
+            return Cesium.Cartographic.fromCartesian(i);
           });
-            var rst= PickPosition(this._fb,samplePoints,this._option.height);
-            this._sampleCallback(rst);
-            this._isSampleDone=true;
+          var rst = PickPosition(this._fb, samplePoints, this._option.height);
+          this._sampleCallback(rst);
+          this._isSampleDone = true;
         }
-        
-        // if (frameState.time.secondsOfDay - this.secondsOfDay > 10) {
-        //   window.textExportImage(this._fb);
-        //   this.secondsOfDay = frameState.time.secondsOfDay;
-        // }
-        //frameState.commandList.push(this._viewportQuadCommand);
+
         //全部渲染完成后计算指定点的值使用readpiexel，读取fb，
-        this.polygonCmds.forEach(c=>{
-          c.modelMatrix=that.polygonprimitrive.modelMatrix;
-        })
+        this.polygonCmds.forEach((c) => {
+          c.modelMatrix = that.polygonprimitrive.modelMatrix;
+        });
         frameState.commandList.push(...this.polygonCmds);
         //渲染结束后展示
       }
@@ -540,9 +618,7 @@ void main()
     }
   }
 
-
   //传入经纬度坐标，计算其值
-  
 
   //设置太阳的方向，仍然需要传入uniformstate
   setSunAndMoonDirections(frameState) {
@@ -583,20 +659,7 @@ void main()
     return sunCamera;
   }
 
-  //创建多个阴影
-  createShadowMaps() {}
 
-  //创建shadowmap，修改其lightcamera为太阳的位置
-  createShadowMap(viewer, options) {
-    this.viewer = viewer;
-    this.shadowMap = viewer.scene.shadowMap;
-    this.lightCamera = this.shadowMap.lightCamera;
-
-    //设置颜色
-    this.visibleAreaColor = options.visibleAreaColor || Cesium.Color.GREEN;
-    this.invisibleAreaColor = options.invisibleAreaColor || Cesium.Color.RED;
-    this.alpha = 0.5;
-  }
 
   //清楚特效
   clear() {}
@@ -607,6 +670,5 @@ void main()
       viewer.scene.primitives.remove(this.polygonprimitrive);
     }
     //同时释放其它对象
-
   }
 }

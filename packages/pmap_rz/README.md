@@ -3,6 +3,10 @@
     <img src="https://img.shields.io/npm/v/pmap-cesium.svg">
   </a>
 
+## ChangeLog
+1.0.10 重大更新，分析结果可进行保存，未全面测试，需要可回退之前版本.
+
+
 ## 联系我
 13247118869
 
