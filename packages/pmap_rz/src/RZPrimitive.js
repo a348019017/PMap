@@ -1,5 +1,5 @@
 
-import { createlegendImage,PickPosition } from "../webgisUtil";
+import { createlegendImage,PickPosition } from "./util/webgisUtil";
 
 
 //此shader不需要lightcamera，实际上太阳日照不必考虑这个，小范围可以考虑,这里考虑添加clipplane以支持空间裁剪
@@ -127,7 +127,7 @@ const fs = `
 uniform sampler2D colorTexture;
 uniform sampler2D legendTexture;
 uniform sampler2D depthTexture;
-in vec2 v_textureCoordinates;
+varying vec2 v_textureCoordinates;
 //多边形裁切
 uniform highp sampler2D u_clippingPlanes;
 uniform mat4 u_clippingPlanesMatrix;
@@ -168,15 +168,15 @@ void main()
 
 
   //取colortexture的r通道
-    vec4 color = texture(colorTexture, v_textureCoordinates);
-    vec4 dcolor= texture(legendTexture, vec2(color.r,0.0));
+    vec4 color = texture2D(colorTexture, v_textureCoordinates);
+    vec4 dcolor= texture2D(legendTexture, vec2(color.r,0.0));
 
     gl_FragColor = vec4(dcolor.rgb,1.0);
 }`;
 
 
 //测试修改阴影的颜色，光照部分标红，非光照部分标绿
-export class ViewShedStage {
+export class RZPrimitive {
   constructor(viewer, options) {
     this.createShadowMap(viewer, options);
     this.init(options);
@@ -315,7 +315,7 @@ export class ViewShedStage {
     const p2C3 = this.getOriginCoordinateSystemPoint(p2, inverseTransform)
 
     // 定义一个垂直向上的向量up
-    const up = new Cesium.Cartesian3(0, 0, 10)
+    const up = new Cesium.Cartesian3(0, 0, -10)
     //  right 实际上就是由p1指向p2的向量
     const right = Cesium.Cartesian3.subtract(p2C3, p1C3, new Cesium.Cartesian3())
 
@@ -462,7 +462,18 @@ export class ViewShedStage {
 
 
   
-
+ //处理点的顺逆时针
+ clockwisePositions(outerRing) {
+  let tangentPlane = Cesium.EllipsoidTangentPlane.fromPoints(outerRing);
+  let positions2D = tangentPlane.projectPointsOntoPlane(
+    outerRing
+  );
+  let windingOrder = Cesium.PolygonPipeline.computeWindingOrder2D(positions2D);
+  if (windingOrder === Cesium.WindingOrder.CLOCKWISE) {
+    outerRing = outerRing.slice().reverse();
+  }
+  return outerRing;
+}
 
 
   //其它初始化操作
@@ -567,6 +578,9 @@ export class ViewShedStage {
     });
 
     if (options.positions) {
+      //要处理点的顺逆时针
+      options.positions = this.clockwisePositions(options.positions);
+
       this._clippingPlanes = this.createClippingPlane(options.positions);
 
       //同时修改shader

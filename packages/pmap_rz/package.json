@@ -1,6 +1,6 @@
 {
   "name": "@pmap-cesium/rz",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "files": [
     "dist"
   ],
@@ -9,7 +9,7 @@
     "access": "public"
   },
   "description": "日照分析sdk",
-  "main": "dist/RZPrimitiveX.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "rollup -c ",
     "dev": "rollup -c -w "

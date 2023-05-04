@@ -9,7 +9,7 @@ import obfuscator from 'rollup-plugin-obfuscator';
 
 
 export default {
-    input: ["src/RZPrimitiveX.js"],
+    input: ["src/index.js"],
     output: [
         {
             name:"pmap_rz",
