@@ -483,7 +483,7 @@ export class RZPrimitive {
     starttime.setHours(8, 0, 0);
     //总计计算60次，10个小时
     this._index = 0;
-    this._count = 60;
+    this._count = 48;
     //间隔10分钟
     this._interval = 10;
     starttime = Cesium.JulianDate.fromDate(starttime);
