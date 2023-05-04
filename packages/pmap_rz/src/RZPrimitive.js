@@ -109,7 +109,7 @@ void main(){
           //gl_FragColor *= czm_cascadeColor(weights);;
           //gl_FragColor = mix(color, helsing_visibleAreaColor, helsing_alpha);
 
-          float rd=0.016667;
+          float rd=0.020833;
            vec4 helsing_visibleAreaColor=vec4(1.0*rd,0.0,0.0,1.0);
            vec4 helsing_unvisibleAreaColor=vec4(0.0,1.0*rd,0.0,1.0);
 
