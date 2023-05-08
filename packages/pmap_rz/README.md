@@ -6,6 +6,10 @@
 ## ChangeLog
 1.0.10 重大更新，分析结果可进行保存，未全面测试，需要可回退之前版本.
 1.0.11 重大更新，新增RZPrimitive类，处理贴地，贴模型的日照分析
+1.0.13 处理凸多边形的ClipPlane，暂不支持保存和凹多边形裁切
+1.0.14 日照分析渲染时renderstate depthmask=false，不讲此渲染的深度值写到缓冲里面去，防止冲突。使用原有的深度缓冲。
+
+
 
 ## 联系我
 13247118869
@@ -14,6 +18,13 @@
 
 * pmap-rz
 Cesium 日照分析sdk
+
+### Class RZPrimitiveX
+多边形范围内的日照分析，不支持建筑地形等表面。可采样globe地形的深度图不包含建筑实现一个贴地效果。其余机制均类似下者
+
+### Class RZPrimitive
+全屏日照（包含建筑模型和地表），通过多边形进行裁切，无法记录分析结果，暂只能实时计算。
+
 
 ## Demo（GIF）
  <a href="https://ponggis.xyz:8070/static/pmap-rz.gif">

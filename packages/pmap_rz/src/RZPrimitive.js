@@ -438,7 +438,7 @@ export class RZPrimitive {
       // depthTest: {
       //   enabled: true,
       // },
-      //  depthMask: true,
+        depthMask: false,
       //  blending: Cesium.BlendingState.ALPHA_BLEND,
     });
 
@@ -498,7 +498,6 @@ export class RZPrimitive {
     //const _colorTexture = inputFramebuffer.getColorTexture(0);
     //获取depthtexture
     const _depthTexture = inputFramebuffer.getDepthStencilTexture();
-  
     let shadowMap = new Cesium.ShadowMap({
       context: viewer.scene.context,
       lightCamera:  viewer.scene._shadowMapCamera,
@@ -528,8 +527,8 @@ export class RZPrimitive {
       }),
     });
     this._fb = framebuffer;
-
-
+    //初次完成刷新操作
+    this._doneCallback=options.doneCallback;
     
     if (options.legends) {
       this._legendimage = createlegendImage(options.legends);
@@ -563,13 +562,15 @@ export class RZPrimitive {
       })
     }
 
+    
     var renderState = Cesium.RenderState.fromCache({
       // depthTest: {
       //   enabled: true,
       // },
-      //  depthMask: true,
+        depthMask: false,
       //  blending: Cesium.BlendingState.ALPHA_BLEND,
     });
+
     //再创建一个quadview用于最终的渲染
 
     const fragmentShader = new Cesium.ShaderSource({
@@ -685,6 +686,7 @@ export class RZPrimitive {
     });
     viewer.scene.camera.percentageChanged=0.01;
     this._ready = false;
+    this._firstdone=false;
   }
 
 
@@ -740,6 +742,12 @@ export class RZPrimitive {
       {
         frameState.commandList.push(this._lastviewportQuadCommand);
       }
+      //渲染完成后触发回调，用于采样点
+      if(!this._firstdone&&this._doneCallback)
+      {
+         this._firstdone=true;
+         this._doneCallback();
+      }
       //this.shadowMap.enabled=false;
       //viewer.scene._environmentState.clearGlobeDepth=true;
     }
@@ -761,6 +769,7 @@ export class RZPrimitive {
 
   //释放shaderResource
   destroy() {
+    this.destoryCommand(this._clearColorCommand);
     this.destoryCommand(this._lastviewportQuadCommand);
     this.destoryCommand(this._viewportQuadCommand);
     return Cesium.destroyObject(this);
