@@ -1,0 +1,32 @@
+{
+  "name": "@pmap-cesium/plugins",
+  "version": "1.0.0",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "description": "cesiumSDK",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rollup -c ",
+    "dev": "rollup -c -w "
+  },
+  "author": "pong",
+  "license": "ISC",
+  "devDependencies": {
+    "@lopatnov/rollup-plugin-uglify": "^2.1.5",
+    "@rollup/plugin-terser": "^0.4.0",
+    "javascript-obfuscator": "^4.0.2",
+    "rollup": "^3.18.0",
+    "rollup-plugin-obfuscator": "^1.0.2"
+  },
+  "dependencies": {
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@turf/turf": "^6.5.0"
+  },
+  "type": "module"
+}
