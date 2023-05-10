@@ -1,4 +1,4 @@
-//Cesium卷帘封装类，除UI外封装一些内部功能
+//Cesium卷帘封装类，除UI外封装一些内部功能,仅仅仅只包含左右的卷帘
 export class CesiumShutter {
 
     /**
