@@ -15,7 +15,6 @@ export class CesiumModelEditor {
     this.scene = viewer.scene;
     //需要锁定待编辑的对象，可以是enty或者其它,不能任意编辑
     this.includeObjects=option.includeObjects||[];
-
     this.offsetHeight=0;
     
   }
