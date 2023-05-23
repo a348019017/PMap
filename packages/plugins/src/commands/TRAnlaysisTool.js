@@ -2,8 +2,22 @@
 import * as turf from "@turf/turf"
 //import "@turf/boolean-intersects"
 
-//退让分析包装类，使用classifyprimitive实现
+/**
+ * 退让分析包装类，使用classifyprimitive实现
+ */
 export class TRAnlaysisTool {
+
+
+
+  /**
+   *  this.xgtool = new TRAnlaysisTool();
+   *  this.xgtool.Polygon=this.geojson; 设置多边形范围
+   *  this.xgtool.Buildings = pmap.rowstoGeojson(dt.data.data,{}); 设置建筑底面
+   *  this.xgtool.TRDistance= this.value1;  设置退让距离
+   *  this.xgtool.clear();
+   * @param {*} option 
+   * @param {*} tileset 
+   */
   constructor(option, tileset) {
     //右键结束绘制，返回全部的点geojson
     this.tileset = tileset;
@@ -17,8 +31,10 @@ export class TRAnlaysisTool {
   //显示横截面
   set showPolygon(value) {}
 
-  //传入一个feature
-  //额外计算一个中心点出来，误差都很小，可以取第一个坐标的值，大面积不得行，如果是geojson
+
+  /**
+   * 传入一个feature，GeoJSON对象
+   */
   set Polygon(geojson) {
     if(!geojson)
        return
@@ -85,7 +101,9 @@ export class TRAnlaysisTool {
     return undefined;
   }
 
-  //设置退让的长度，这里就需要不断修改
+  /**
+   * 设置退让的长度，这里就需要不断修改
+   */
   set TRDistance(value) {
     //内部采用虚线绘制
     if (this.polygoninnerEnty) {
@@ -204,6 +222,9 @@ export class TRAnlaysisTool {
 
   }
 
+  /**
+   * 清除Cesium对象
+   */
   clear(){
     //构造一个polygon
     if (this.polygonPrimitive) {
@@ -218,7 +239,9 @@ export class TRAnlaysisTool {
     }
   }
 
-  //释放和清理相关资源
+  /**
+   * 释放和清理相关资源
+   */
   destory() {
     //构造一个polygon
     if (this.polygonPrimitive) {
