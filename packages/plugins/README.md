@@ -7,6 +7,8 @@
 ## 简介
 Cesium的一些中低粒度常用封装类，如编辑模型等操作。一般不包含UI操作，需要UI部分请查看@pmap-cesium/vueCom的组件封装。本包不编译Cesium代码。
 
+[查看文档](https://a348019017.github.io/pmapdoc/).
+
 ## ChangeLog
 1.0.0 更新三个插件类
 
@@ -33,6 +35,10 @@ Cesium的一些中低粒度常用封装类，如编辑模型等操作。一般�
   退让分析
 
 * XGAnlaysisTool
+
+  限高分析
+
+  * XGAnlaysisTool
 
   限高分析
 

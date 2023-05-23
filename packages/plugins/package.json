@@ -1,6 +1,6 @@
 {
   "name": "@pmap-cesium/plugins",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "files": [
     "dist"
   ],
@@ -13,7 +13,8 @@
   "scripts": {
     "build": "rollup -c ",
     "dev": "rollup -c -w ",
-    "build-doc": "jsdoc --readme ./README.md ./src -r -d ./public/doc"
+    "build-doc": "jsdoc --readme ./README.md ./src -r -d ./public/doc",
+    "publish": "npm run build && npm publish"
   },
   "author": "pong",
   "license": "ISC",
