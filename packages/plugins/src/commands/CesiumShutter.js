@@ -55,4 +55,8 @@ export class CesiumShutter {
             this._handler = undefined;
         }
     }
+
+    destroy(){
+        
+    }
 }
