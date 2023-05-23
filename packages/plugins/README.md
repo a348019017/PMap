@@ -9,6 +9,20 @@ Cesium的一些中低粒度常用封装类，如编辑模型等操作。一般�
 
 [查看文档](https://a348019017.github.io/pmapdoc/).
 
+## 安装
+```````````````````````````````````
+cnpm install @pmap-cesium/plugins --save
+```````````````````````````````````
+
+```````````````````````````````````
+
+import {CesiumModelEditor} from "@pmap-cesium/plugins"
+
+let editor=new CesiumModelEditor();
+editor.active(); //激活功能
+
+````````````````````````````````````
+
 ## ChangeLog
 1.0.0 更新三个插件类
 
