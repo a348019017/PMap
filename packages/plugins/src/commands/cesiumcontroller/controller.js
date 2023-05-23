@@ -5,6 +5,10 @@ import AxisSphere from './model/AxisSphere'
 import EventManager from './event/EventManager'
 import {TilesetWrapper} from "./model/TilesetWrapper"
 
+
+/**
+ * 模型编辑类（带参考轴，旋转球）
+ */
 export  class TranslationController {
 
     /**

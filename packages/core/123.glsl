@@ -83,6 +83,9 @@ uniform vec4 czm_frustumPlanes;
 uniform mat4 czm_inverseProjection;
 uniform mat4 czm_viewportTransformation;
 
+
+
+
 float czm_private_shadowVisibility(float visibility, float nDotL, float normalShadingSmooth, float darkness)
 {
 #ifdef USE_NORMAL_SHADING
