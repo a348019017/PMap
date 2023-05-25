@@ -1,6 +1,6 @@
 # pmap-plugins
  <a href="">
-    <img src="https://img.shields.io/npm/v/pmap-cesium.svg">
+    <img src="https://raster.shields.io/npm/v/@pmap-cesium/plugins">
   </a>
 
 
@@ -31,8 +31,7 @@ editor.active(); //激活功能
 
 1.0.2 TRAnlaysisTool 退让分析 XGAnlaysisTool 限高分析
 
-1.0.3 CesiumDrawTool  CesiumLabelEditor 
-
+1.0.3 CesiumDrawTool  CesiumLabelEditor AnimationEntity
 
 ## Contents
 
@@ -71,6 +70,40 @@ editor.active(); //激活功能
 * XGAnlaysisTool
 
   限高分析
+
+
+## 封装的要求
+
+* 统一按功能封装成类
+
+* 尽可能统一的通用接口调用名称
+
+start()  stop()  End()  destory() active() deactive()  open() close() load()  unload() 等易于通用的接口名称
+
+* 功能可能包含数据输入输出
+
+统一规范输入，如矢量数据输入输出采用GeoJSON，同时也可输入输出Cesium的对象。
+
+## 如何调试
+
+下载代码，启动dev，主项目link到此项目，相当于启动两个项目进行调试. 这里的link详细用法为,当然可以尝试其他的link方式。
+lerna有自己的link方式，在一个大包里面可以自动链接。
+
+````````````
+cnpm i npminstall -g
+
+## link to global
+npmlink
+
+## use some link
+npmlink some-lib
+
+``````````
+
+
+
+
+
 
 
 

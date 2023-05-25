@@ -12,7 +12,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "rollup -c ",
-    "dev": "rollup -c -w ",
+    "dev": "rollup -c rollup.config.dev.js  -w ",
     "build-doc": "jsdoc --readme ./README.md ./src -r -d ./public/doc",
     "publish": "npm run build && npm publish"
   },
