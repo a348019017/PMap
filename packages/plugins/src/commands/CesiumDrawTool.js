@@ -1,7 +1,7 @@
 
 
 import * as turf from "@turf/turf"
-import { GUID } from "../util";
+import { GUID } from "../util/util";
 
 
 export const DrawingMode={

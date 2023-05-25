@@ -2,6 +2,9 @@
  <a href="">
     <img src="https://raster.shields.io/npm/v/@pmap-cesium/plugins">
   </a>
+   <a href="">
+    <img src="https://img.shields.io/npm/dm/@pmap-cesium/plugins">
+  </a>
 
 
 ## 简介
@@ -97,8 +100,7 @@ npmlink
 
 ## use some link
 npmlink some-lib
-
-``````````
+````````````
 
 
 
