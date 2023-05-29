@@ -6,7 +6,7 @@ export class CesiumShutter {
 
     /**
      * 构建一个卷帘类，处理上下卷帘和左右卷帘的操作，包含一点UI动作，用于Vue Shutter中使用
-     * @param {*} divOrName 
+     * @param {*} divOrName  卷帘中心分隔线的element id
      * @param {*} option 
      */
     constructor(divOrName,option){

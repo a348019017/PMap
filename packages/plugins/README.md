@@ -74,6 +74,10 @@ editor.active(); //激活功能
 
   限高分析
 
+* ModelSelectedCommand（byPolygon）
+  
+  模型选取高亮，适用于建筑底面方案，不适用单体化方案
+
 
 ## 封装的要求
 

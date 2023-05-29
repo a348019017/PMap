@@ -1,6 +1,6 @@
 {
   "name": "@pmap-cesium/plugins",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "files": [
     "dist"
   ],
@@ -14,7 +14,8 @@
     "build": "rollup -c ",
     "dev": "rollup -c rollup.config.dev.js  -w ",
     "build-doc": "jsdoc --readme ./README.md ./src -r -d ./public/doc",
-    "build-publish": "npm run build && npm publish"
+    "build-publish": "npm run build && npm publish",
+    "build-dts": "tsc  ./src/index.js"
   },
   "author": "pong",
   "license": "ISC",
@@ -24,7 +25,8 @@
     "javascript-obfuscator": "^4.0.2",
     "jsdoc": "^4.0.2",
     "rollup": "^3.18.0",
-    "rollup-plugin-obfuscator": "^1.0.2"
+    "rollup-plugin-obfuscator": "^1.0.2",
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "@rollup/plugin-commonjs": "^24.0.1",
