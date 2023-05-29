@@ -102,6 +102,16 @@ export  class TranslationController {
     //是否允许移动
     moveEnable = null
 
+
+    /**
+   * 构造函数
+   *
+   * @param {Viewer} [viewer] 
+   * @param {Cesium.Model||Cesium.Tileset||Cesium.ModelExpir} [model] 模型对象
+   *
+   * @alias TranslationController
+   * @constructor
+   */
     constructor(viewer, model) {
         this.viewer = viewer
         if (model instanceof Cesium.Cesium3DTileset) {

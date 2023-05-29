@@ -8,15 +8,18 @@
  * 标注，包含billboard编辑器
  */
 export class CesiumLabelEditor {
+  /**
+   * @param {function} _callback  绘制完成回调函数
+   * @param {object} option  参数
+   */
   constructor(_callback, option) {
-
     //this._editorEntities=option.entities;
-    this._callback=_callback;
+    this._callback = _callback;
     this.handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
     this.scene = viewer.scene;
   }
 
-  projectto(position,is3d) {
+  projectto(position, is3d) {
     var ellipsoid = viewer.scene.globe.ellipsoid;
     var cartesian3 = position;
     var cartographic = ellipsoid.cartesianToCartographic(cartesian3);
@@ -31,32 +34,27 @@ export class CesiumLabelEditor {
   }
 
   active() {
-
     let that = this;
-    let dragging=false;
-    let pickedEntity=undefined;
+    let dragging = false;
+    let pickedEntity = undefined;
     //viewer.scene.globe.depthTestAgainstTerrain = true;
 
     this.handler.setInputAction(function (click) {
-      
-        var pickedObject = that.scene.pick(click.position);
-        if (Cesium.defined(pickedObject) && pickedObject.id) {
-          //编辑标注
-          if(pickedObject.id.label)
-          {
-            pickedObject.id.label.scale=1.2;
-            dragging=true;
-            pickedEntity=pickedObject.id;
-            that.scene.screenSpaceCameraController.enableRotate = false;
-          }
-        } else {
-          ;
+      var pickedObject = that.scene.pick(click.position);
+      if (Cesium.defined(pickedObject) && pickedObject.id) {
+        //编辑标注
+        if (pickedObject.id.label) {
+          pickedObject.id.label.scale = 1.2;
+          dragging = true;
+          pickedEntity = pickedObject.id;
+          that.scene.screenSpaceCameraController.enableRotate = false;
         }
-      
+      } else {
+      }
     }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
 
     this.handler.setInputAction(function (movement) {
-      if (dragging&&pickedEntity) {
+      if (dragging && pickedEntity) {
         //屏幕坐标转经纬度
         var newCartesian = viewer.scene.pickPosition(movement.endPosition);
         if (newCartesian) {
@@ -68,13 +66,12 @@ export class CesiumLabelEditor {
     this.handler.setInputAction(function (event) {
       if (pickedEntity && dragging) {
         dragging = false;
-        pickedEntity.label.scale=1.0;
+        pickedEntity.label.scale = 1.0;
         if (that._callback) {
           that._callback(pickedEntity);
         }
-        pickedEntity=undefined;
+        pickedEntity = undefined;
         that.scene.screenSpaceCameraController.enableRotate = true;
-        
       }
     }, Cesium.ScreenSpaceEventType.LEFT_UP);
   }

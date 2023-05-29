@@ -31,7 +31,8 @@
   "dependencies": {
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
-    "@turf/turf": "^6.5.0"
+    "@turf/turf": "^6.5.0",
+    "kdbush": "^4.0.2"
   },
   "type": "module"
 }
