@@ -7,4 +7,7 @@ export { TRAnlaysisTool } from "./commands/TRAnlaysisTool";
 export { CesiumLabelEditor } from "./commands/CesiumLabelEditor";
 export { AnimationEntity } from "./commands/AnimationEntity";
 export { CesiumDrawTool } from "./commands/CesiumDrawTool";
+export { CesiumDrawCircleTool } from "./commands/CesiumdrawCircleTool";
+export { CesiumDrawRectangleTool } from "./commands/CesiumDrawRectangleTool";
+export { default as primitivecluster } from "./core/primitivecluster";
 //# sourceMappingURL=index.d.ts.map

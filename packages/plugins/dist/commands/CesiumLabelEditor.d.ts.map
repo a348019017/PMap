@@ -1,1 +1,1 @@
-{"version":3,"file":"CesiumLabelEditor.d.ts","sourceRoot":"","sources":["../../src/commands/CesiumLabelEditor.js"],"names":[],"mappings":"AAMA;;GAEG;AACH;IACE,yCAMC;IAHC,eAAwB;IACxB,aAAgE;IAChE,WAAyB;IAG3B,2CAYC;IAED,eA+CC;IAED,iBAiBC;CACF"}
+{"version":3,"file":"CesiumLabelEditor.d.ts","sourceRoot":"","sources":["../../src/commands/CesiumLabelEditor.js"],"names":[],"mappings":"AAMA;;GAEG;AACH;IACE;;;OAGG;IACH,yCAFW,MAAM,EAOhB;IAHC,oBAA0B;IAC1B,aAAgE;IAChE,WAAyB;IAG3B,2CAYC;IAED,eAyCC;IAED,iBAiBC;CACF"}

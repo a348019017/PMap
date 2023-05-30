@@ -6,6 +6,18 @@
  * 4 比setinterval方法更流畅精确，直接使用cesium内部时间戳
  */
 export class AnimationEntity {
+    /**
+     * 构造函数
+     *
+     * @param {Object} [options] An object with the following properties:
+     * @param {Cartisian3} [options.initPosition=undefined] Whether or not to enable clustering.
+     * @param {Number} [options.dateTime=20] 时间差，预留缓存时间差，单位s
+     * @param {Number} [options.properties={}] 可选模型的属性信息
+     * @param {Boolean} [options.modelurl=""] gltf模型地址
+     *
+     * @alias AnimationEntity
+     * @constructor
+     */
     constructor(option: any);
     latestPosition: any;
     offsettime: any;

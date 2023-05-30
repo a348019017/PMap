@@ -1,6 +1,6 @@
 {
   "name": "@pmap-cesium/plugins",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "files": [
     "dist"
   ],
@@ -14,8 +14,8 @@
     "build": "rollup -c ",
     "dev": "rollup -c rollup.config.dev.js  -w ",
     "build-doc": "jsdoc --readme ./README.md ./src -r -d ./public/doc",
-    "build-publish": "npm run build && npm publish",
-    "build-dts": "tsc  ./src/index.js"
+    "build-publish": "npm run build && npm run build-dts && npm publish",
+    "build-dts": "tsc"
   },
   "author": "pong",
   "license": "ISC",

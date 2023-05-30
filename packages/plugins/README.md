@@ -24,7 +24,7 @@ import {CesiumModelEditor} from "@pmap-cesium/plugins"
 
 let editor=new CesiumModelEditor();
 editor.active(); //激活功能
-
+editor.deactive(); //反激活关闭功能
 ````````````````````````````````````
 
 ## ChangeLog
@@ -37,6 +37,10 @@ editor.active(); //激活功能
 1.0.3 CesiumDrawTool  CesiumLabelEditor AnimationEntity
 
 ## Contents
+
+* CesiumDrawTool
+
+   绘制线面，矩形，圆形灯，考虑整合
 
 * AnimationEntity
 
