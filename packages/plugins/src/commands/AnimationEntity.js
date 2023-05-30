@@ -16,6 +16,7 @@ export class AnimationEntity {
    * @param {Cartisian3} [options.initPosition=undefined] Whether or not to enable clustering.
    * @param {Number} [options.dateTime=20] 时间差，预留缓存时间差，单位s
    * @param {Number} [options.properties={}] 可选模型的属性信息
+   * @param {Number} [options.offsetHeading=3.14] 方位角偏移，弧度制,另外其它的偏移参数暂未考虑
    * @param {Boolean} [options.modelurl=""] gltf模型地址
    *
    * @alias AnimationEntity
@@ -28,6 +29,7 @@ export class AnimationEntity {
     this.offsettime = option.offsettime || 20;
     //设定初始时间
     this.initDatetime = option.dateTime || Cesium.JulianDate.now();
+    this.offsetHeading=option.offsetHeading||3.14;
     this.entyproperties = option.properties || {};
     //添加点的同时修改当前场景时间戳延后数秒，达到真实的时间段。
     let modelurl = option.modelurl || "static/models/car2.glb";
@@ -62,7 +64,7 @@ export class AnimationEntity {
       if (!quad) return quad;
       let mat3 = Cesium.Matrix3.fromQuaternion(quad);
       //
-      let offsettranslationmat3 = Cesium.Matrix3.fromRotationZ(3.14);
+      let offsettranslationmat3 = Cesium.Matrix3.fromRotationZ(that.offsetHeading);
       let rotationScratch = Cesium.Matrix3.multiply(
         mat3,
         offsettranslationmat3,

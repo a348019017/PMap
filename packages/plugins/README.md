@@ -36,6 +36,8 @@ editor.deactive(); //反激活关闭功能
 
 1.0.3 CesiumDrawTool  CesiumLabelEditor AnimationEntity
 
+1.0.6 CesiumDrawCircleTool  CesiumDrawRectangleTool
+
 ## Contents
 
 * CesiumDrawTool

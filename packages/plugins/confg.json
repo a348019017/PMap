@@ -1,0 +1,6 @@
+{
+    "source": {
+        "include": ["src/","src/commands/cesiumcontroller/controller.js"],
+        "exclude": ["src/commands/cesiumcontroller/"]
+    }
+}

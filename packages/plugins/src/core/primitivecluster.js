@@ -534,6 +534,8 @@ Object.defineProperties(PrimitiveCluster.prototype, {
   },
   /**
    * 设置防抖间隔降低处理频率
+   * @memberof PrimitiveCluster.prototype
+   * @type {Number}
    */
   delay: {
     get: function () {

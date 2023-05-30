@@ -13,7 +13,7 @@
   "scripts": {
     "build": "rollup -c ",
     "dev": "rollup -c rollup.config.dev.js  -w ",
-    "build-doc": "jsdoc --readme ./README.md ./src -r -d ./public/doc",
+    "build-doc": "jsdoc -c ./confg.json --readme ./README.md  -r -d ./public/doc",
     "build-publish": "npm run build && npm run build-dts && npm publish",
     "build-dts": "tsc"
   },
