@@ -1,6 +1,15 @@
 {
-  "name": "cesiumvue",
+  "name": "@pmap-cesium/vue2",
   "version": "0.0.1",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "description": "cesiumVueSDK",
+  "main": "dist/index.js.umd.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

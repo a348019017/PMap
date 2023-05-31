@@ -8,7 +8,7 @@ import vue2 from '@vitejs/plugin-vue2'
 
 const test= {
   entry: path.resolve(__dirname, "./src/index.js"),
-  fileName: "lvs.js",
+  fileName: "index.js",
 };
 
 // https://vitejs.dev/config/
