@@ -3,18 +3,20 @@ const path = require('path')
 import { defineConfig } from 'vite'
 import legacy from '@vitejs/plugin-legacy'
 import vue2 from '@vitejs/plugin-vue2'
-
+import dts from 'vite-plugin-dts'
 
 
 const test= {
   entry: path.resolve(__dirname, "./src/index.js"),
   fileName: "index.js",
+  formats: ['es']
 };
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue2(),
+    dts()
     // legacy({
     //   targets: ['ie >= 11'],
     //   additionalLegacyPolyfills: ['regenerator-runtime/runtime']
