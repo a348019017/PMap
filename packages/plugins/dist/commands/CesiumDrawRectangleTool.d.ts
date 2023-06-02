@@ -15,13 +15,13 @@ export class CesiumDrawRectangleTool {
     viewer: any;
     callback: any;
     Cesium: any;
-    floatingPoint: any;
-    _rectangle: any;
-    _rectangleLast: any;
-    _positions: any[];
-    _entities_point: any[];
-    _entities_rectangle: any[];
+    /**
+     * 激活功能
+     */
     active(): void;
+    /**
+     * 反激活功能
+     */
     deactive(): void;
     drawRectangle(): void;
     handler: any;

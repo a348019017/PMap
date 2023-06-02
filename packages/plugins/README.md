@@ -38,6 +38,8 @@ editor.deactive(); //反激活关闭功能
 
 1.0.6 CesiumDrawCircleTool  CesiumDrawRectangleTool
 
+1.0.7 Cesium.Measure  CesiumShutter
+
 ## Contents
 
 * CesiumDrawTool
@@ -83,6 +85,10 @@ editor.deactive(); //反激活关闭功能
 * ModelSelectedCommand（byPolygon）
   
   模型选取高亮，适用于建筑底面方案，不适用单体化方案
+
+* Cesium.Measure
+  
+  测量功能，封装面积，长度和三角测量，文件名称修改为
 
 
 ## 封装的要求

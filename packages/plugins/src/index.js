@@ -10,3 +10,6 @@ export {CesiumDrawTool} from "./commands/CesiumDrawTool"
 export {CesiumDrawCircleTool} from "./commands/CesiumdrawCircleTool"
 export {CesiumDrawRectangleTool} from "./commands/CesiumDrawRectangleTool"
 export {default as primitivecluster} from "./core/primitivecluster"
+
+
+import "./commands/CesiumMeasure";

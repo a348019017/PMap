@@ -12,7 +12,7 @@ export default {
     input: ["src/index.js"],
     output: [
         {
-            name:"pmap_rz",
+            name:"HTCesiumSDK",
             dir: "dist",
             entryFileNames: "[name].js",
             //file: pkg.browser,

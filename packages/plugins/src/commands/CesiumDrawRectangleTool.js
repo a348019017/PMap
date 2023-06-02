@@ -12,15 +12,11 @@ export class CesiumDrawRectangleTool {
     this.viewer = viewer;
     this.callback = callback;
     this.Cesium = Cesium;
-
-    this.floatingPoint = null; //标识点
-    this._rectangle = null; //活动矩形
-    this._rectangleLast = null; //最后一个矩形
-    this._positions = []; //活动点
-    this._entities_point = []; //脏数据
-    this._entities_rectangle = []; //脏数据
-   
+    
   }
+  /**
+   * 激活功能
+   */
   active() {
     this.clear();
     if (this.handler) {
@@ -28,6 +24,9 @@ export class CesiumDrawRectangleTool {
     }
     this.drawRectangle();
   }
+  /**
+   * 反激活功能
+   */
   deactive() {
     this.clear();
     this.destroy();

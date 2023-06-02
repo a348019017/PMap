@@ -13,6 +13,7 @@ export class AnimationEntity {
      * @param {Cartisian3} [options.initPosition=undefined] Whether or not to enable clustering.
      * @param {Number} [options.dateTime=20] 时间差，预留缓存时间差，单位s
      * @param {Number} [options.properties={}] 可选模型的属性信息
+     * @param {Number} [options.offsetHeading=3.14] 方位角偏移，弧度制,另外其它的偏移参数暂未考虑
      * @param {Boolean} [options.modelurl=""] gltf模型地址
      *
      * @alias AnimationEntity
@@ -22,6 +23,7 @@ export class AnimationEntity {
     latestPosition: any;
     offsettime: any;
     initDatetime: any;
+    offsetHeading: any;
     entyproperties: any;
     realproperty: any;
     enty: any;

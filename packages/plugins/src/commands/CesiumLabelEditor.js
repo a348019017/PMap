@@ -1,9 +1,3 @@
-
-
-
-
-
-
 /**
  * 标注，包含billboard编辑器
  */
@@ -95,6 +89,3 @@ export class CesiumLabelEditor {
     // this.Poly_pointsCollections = [];
   }
 }
-
-
-
