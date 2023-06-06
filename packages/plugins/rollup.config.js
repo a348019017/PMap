@@ -26,5 +26,6 @@ export default {
     // plugins: [
     //     resolve(),commonjs()
     // ],
-    external: []
+    //排除turf
+    external: ["@cesium/engine"]
 };

@@ -1,10 +1,10 @@
 ; if (typeof Cesium !== 'undefined')
   /**
   * Cesium.Measure对象构造，暂不能直接引用
-  * @author zhangti
   * @param viewer  {object} 三维对象
   * @param options {object} 初始化参数
   * @constructor
+  * @class
   */
   Cesium.Measure = (function (Cesium) {
 

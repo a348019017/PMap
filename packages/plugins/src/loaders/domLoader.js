@@ -1,11 +1,11 @@
 import { jsonToCesiumObject } from "../util/util";
-
+import  "@dvgis/cesium-map"
 
 /**
  * 预定义的图层枚举
  * 其它图层可自行定义在配置文件中
  */
-export let preDefineTMSUrl = {
+export let preDefineImagery = {
     GaoDeDom:{
       name: "gaodedom",
       title: "高德影像",
@@ -14,7 +14,7 @@ export let preDefineTMSUrl = {
       //这里需要设置原始瓦片所能支持的最高级别
       maximumLevel: 16,
       value: false,
-      type: "ImageryProvider",
+      //type: "ImageryProvider",
     },
     GaoDeMap:{
       name: "gaodemap",
@@ -23,7 +23,7 @@ export let preDefineTMSUrl = {
       minimumLevel: 3,
       maximumLevel: 21,
       value: false,
-      type: "ImageryProvider",
+      //type: "ImageryProvider",
     },
     GaoDeDomX:{
       name: "gaodemapx",
@@ -75,12 +75,47 @@ export let preDefineTMSUrl = {
  */
 export class DomLoader
 {
-     load(cfg)
-     {
-          
-     }
-      
-     remove(id){
+     //预定义的TMS
+  parseJsonToImageProvider(j) {
+    if (j.type) return jsonToCesiumObject(j);
+    else {
+      let tmplayer = new Cesium.UrlTemplateImageryProvider({
+        url: j.url,
+        maximumLevel: j.maximumLevel ? j.maximumLevel : 21,
+        minimumLevel: j.minimumLevel ? j.minimumLevel : 0,
+        rectangle: j.rectangle
+          ? Cesium.Rectangle.fromDegrees(
+            j.rectangle[0],
+            j.rectangle[1],
+            j.rectangle[2],
+            j.rectangle[3]
+          )
+          : Cesium.Rectangle.MAX_VALUE,
+      });
+      return tmplayer;
+    }
+  }
 
-     }
+  /**
+   * 
+   * @param {viewer} viewer 
+   * @param {object} j 传入影像图层配置文件,一律通过配置文件进行加载
+   * @returns Cesium.ImageryLayer
+   */
+  addImagelayer(viewer, j) {
+    let viewerLayers = viewer.scene.imageryLayers;
+    viewerLayers.removeAll();
+    let tmplayer = this.parseJsonToImageProvider(j);
+    var imglayer = viewerLayers.addImageryProvider(tmplayer);
+    return imglayer;
+  }
+
+
+  removeImagelayer(viewer, j) {
+    let viewerLayers = viewer.scene.imageryLayers;
+    if (j.ref) {
+      viewerLayers.remove(j.ref, true);
+      j.ref = undefined;
+    }
+  }
 }

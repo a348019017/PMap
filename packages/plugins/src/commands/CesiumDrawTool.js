@@ -11,6 +11,7 @@ export const DrawingMode={
 
 /**
  * 绘制线面的封装
+ * @alias CesiumDrawTool
  */
 export class CesiumDrawTool {
     /**

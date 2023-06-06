@@ -1,3 +1,5 @@
+
+//功能封装
 export {CesiumShutter} from "./commands/CesiumShutter"
 export {TranslationController} from "./commands/cesiumcontroller/controller"
 export {CesiumModelEditor} from "./commands/CesiumModelEditor"
@@ -9,7 +11,13 @@ export {AnimationEntity} from "./commands/AnimationEntity"
 export {CesiumDrawTool} from "./commands/CesiumDrawTool"
 export {CesiumDrawCircleTool} from "./commands/CesiumdrawCircleTool"
 export {CesiumDrawRectangleTool} from "./commands/CesiumDrawRectangleTool"
+
+import "./commands/CesiumMeasure";
+
+//底层封装
 export {default as primitivecluster} from "./core/primitivecluster"
 
 
-import "./commands/CesiumMeasure";
+
+//loaders
+export * from "./loaders/index"

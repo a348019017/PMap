@@ -26,11 +26,12 @@
     "jsdoc": "^4.0.2",
     "rollup": "^3.18.0",
     "rollup-plugin-obfuscator": "^1.0.2",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.1"
   },
   "dependencies": {
-    "@rollup/plugin-commonjs": "^24.0.1",
-    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@dvgis/cesium-map": "^3.0.0",
     "@turf/turf": "^6.5.0",
     "kdbush": "^4.0.2"
   },
