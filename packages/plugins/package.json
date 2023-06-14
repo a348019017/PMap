@@ -1,6 +1,6 @@
 {
   "name": "@pmap-cesium/plugins",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "files": [
     "dist"
   ],
@@ -21,14 +21,15 @@
   "license": "ISC",
   "devDependencies": {
     "@lopatnov/rollup-plugin-uglify": "^2.1.5",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-image": "^3.0.2",
+    "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-terser": "^0.4.0",
     "javascript-obfuscator": "^4.0.2",
     "jsdoc": "^4.0.2",
     "rollup": "^3.18.0",
     "rollup-plugin-obfuscator": "^1.0.2",
-    "typescript": "^5.0.4",
-    "@rollup/plugin-commonjs": "^24.0.1",
-    "@rollup/plugin-node-resolve": "^15.0.1"
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "@dvgis/cesium-map": "^3.0.0",

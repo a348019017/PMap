@@ -55,6 +55,12 @@ export function getNearestLine(featurecollection,option){
  }
 
 
+ //feature转换成billboard
+ export function features2Billboard(geojson,option){
+     
+ }
+
+
   //将geojson转换成primitive，用于单体化个体建筑,要求包含3d坐标,修改转换代码
    function geojson2Primitive(geo) {
     let rest = [];

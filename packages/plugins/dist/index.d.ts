@@ -11,4 +11,5 @@ export { CesiumDrawCircleTool } from "./commands/CesiumdrawCircleTool";
 export { CesiumDrawRectangleTool } from "./commands/CesiumDrawRectangleTool";
 export { default as primitivecluster } from "./core/primitivecluster";
 export * from "./loaders/index";
+export { WindChart, CanvasWindField, CanvasParticle } from "./core/WindChart";
 //# sourceMappingURL=index.d.ts.map

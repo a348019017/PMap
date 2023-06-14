@@ -19,6 +19,8 @@ export class CesiumDrawTool {
      * @param {object} option  参数
      * @param {DrawMode} option.drawingMode  参数
      * @param {boolean} option.isclearwhencomplete  绘制完成后是否自行移除
+     * @param {color} option.linecolor       线颜色
+     * @param {color} option.fillcolor       填充色
      */
     constructor(_callback, option) {
         

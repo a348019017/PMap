@@ -1,2 +1,2 @@
-export { DomLoader } from "./domLoader";
+export { DomLoader, preDefineImagery } from "./domLoader";
 //# sourceMappingURL=index.d.ts.map

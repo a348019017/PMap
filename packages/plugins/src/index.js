@@ -13,10 +13,12 @@ export {CesiumDrawCircleTool} from "./commands/CesiumdrawCircleTool"
 export {CesiumDrawRectangleTool} from "./commands/CesiumDrawRectangleTool"
 
 import "./commands/CesiumMeasure";
+export {CesiumMeasurement} from "./commands/measureMap2"
 
 //底层封装
 export {default as primitivecluster} from "./core/primitivecluster"
-
+export {WindChart,CanvasWindField,CanvasParticle} from "./core/WindChart"
+export {default as Aggreate} from "./core/Aggreate"    //聚类
 
 
 //loaders

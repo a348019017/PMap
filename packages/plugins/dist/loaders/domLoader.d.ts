@@ -1,4 +1,4 @@
-export namespace preDefineTMSUrl {
+export namespace preDefineImagery {
     namespace GaoDeDom {
         const name: string;
         const title: string;
@@ -79,7 +79,13 @@ export namespace preDefineTMSUrl {
  */
 export class DomLoader {
     parseJsonToImageProvider(j: any): any;
-    addimagelayer(viewer: any, j: any): void;
-    removeimagelayer(viewer: any, j: any): void;
+    /**
+     *
+     * @param {viewer} viewer
+     * @param {object} j 传入影像图层配置文件,一律通过配置文件进行加载
+     * @returns Cesium.ImageryLayer
+     */
+    addImagelayer(viewer: any, j: object): any;
+    removeImagelayer(viewer: any, j: any): void;
 }
 //# sourceMappingURL=domLoader.d.ts.map

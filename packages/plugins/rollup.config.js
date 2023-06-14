@@ -5,6 +5,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import terser from '@rollup/plugin-terser';
 import uglify from '@lopatnov/rollup-plugin-uglify';
 import obfuscator from 'rollup-plugin-obfuscator';
+import image from '@rollup/plugin-image';
 //import pkg from './package.json'  assert { type: "json" };
 
 
@@ -21,11 +22,11 @@ export default {
         }
     ],
     plugins: [
-        resolve(),commonjs(),terser(),uglify(),obfuscator()
+        resolve(),commonjs(),terser(),uglify(),obfuscator(),image()
     ],
     // plugins: [
-    //     resolve(),commonjs()
+    //     resolve(),commonjs(),image()
     // ],
     //排除turf
-    external: ["@cesium/engine"]
+    external: ["@cesium/engine","@turf/turf"]
 };

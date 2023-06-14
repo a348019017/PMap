@@ -40,6 +40,10 @@ editor.deactive(); //反激活关闭功能
 
 1.0.7 Cesium.Measure  CesiumShutter
 
+1.0.8 WindChart domLoader flatGeoBufferLoader
+
+1.0.9 ModelLoader 
+
 ## Contents
 
 * CesiumDrawTool

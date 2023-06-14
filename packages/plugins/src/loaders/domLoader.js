@@ -4,6 +4,7 @@ import  "@dvgis/cesium-map"
 /**
  * 预定义的图层枚举
  * 其它图层可自行定义在配置文件中
+ * 
  */
 export let preDefineImagery = {
     GaoDeDom:{
@@ -72,6 +73,8 @@ export let preDefineImagery = {
 
 /**
  * 处理影像的加载类，loader主要满足的数据的加载管理，面向图层，统一接口,数据驱动，没有中间包装的对象
+ * @memberof Loaders
+ * @class DomLoader
  */
 export class DomLoader
 {
@@ -97,7 +100,6 @@ export class DomLoader
   }
 
   /**
-   * 
    * @param {viewer} viewer 
    * @param {object} j 传入影像图层配置文件,一律通过配置文件进行加载
    * @returns Cesium.ImageryLayer
@@ -110,7 +112,10 @@ export class DomLoader
     return imglayer;
   }
 
-
+ /**
+   * @param {viewer} viewer 
+   * @param {object} j 传入影像图层配置文件,一律通过配置文件进行加载
+   */
   removeImagelayer(viewer, j) {
     let viewerLayers = viewer.scene.imageryLayers;
     if (j.ref) {
