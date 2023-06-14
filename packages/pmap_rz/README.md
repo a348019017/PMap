@@ -1,6 +1,9 @@
 # pmap-rz
  <a href="">
-    <img src="https://img.shields.io/npm/v/pmap-cesium.svg">
+    <img src="https://raster.shields.io/npm/v/@pmap-cesium/rz">
+  </a>
+   <a href="">
+    <img src="https://img.shields.io/npm/dm/@pmap-cesium/rz">
   </a>
 
 ## ChangeLog
@@ -30,7 +33,7 @@ Cesium 日照分析sdk
 
 
 ## Demo（GIF）
- <a href="https://ponggis.xyz:8070/static/pmap-rz.gif">
+ <a href="https://www.pmap.top:8070/static/pmap-rz.gif">
    demo地址
  </a>
 <img src="20230313113446.png">
